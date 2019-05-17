@@ -32,7 +32,7 @@ export default {
     background-position: center center;
     position: relative;
     z-index: 1;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 
     // Hover effect
 
@@ -51,6 +51,7 @@ export default {
       opacity: 0.9;
       .home__figure__title {
         color: $pink;
+        --type-shadow: 1px 2px white;
       }
     }
 
@@ -108,11 +109,13 @@ export default {
 
     &__title {
       --typo-size: 5rem;
+      --type-shadow: 1px 2px black;
 
       font-family: $Luckiest;
       color: white;
       font-weight: 400;
       font-size: var(--typo-size);
+      text-shadow: var(--type-shadow);
       position: absolute;
       transition: all 0.3s ease;
 
