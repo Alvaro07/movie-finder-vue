@@ -7,6 +7,7 @@ import Series from './views/Series.vue'
 Vue.use(Router)
 
 export default new Router({
+  linkExactActiveClass: 'nav__item__link--active',
   routes: [
     {
       path: '/',
