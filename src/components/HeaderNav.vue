@@ -1,16 +1,18 @@
 <template>
-  <nav class="nav">
-    <ul>
-      <li class="nav__item">
-        <router-link to="/films" exact class="nav__item__link">Films</router-link>
-      </li>
+  <nav>
+    <ul class="nav">
       <li class="nav__item nav__item--home">
         <router-link to="/" exact class="nav__item__link">
           <font-awesome-icon icon="home"/>
         </router-link>
       </li>
+
       <li class="nav__item">
-        <router-link to="/series" exact class="nav__item__link">Series</router-link>
+        <router-link to="/search/films" class="nav__item__link" exact>Films</router-link>
+      </li>
+
+      <li class="nav__item">
+        <router-link to="/search/series" class="nav__item__link" exact>Series</router-link>
       </li>
     </ul>
   </nav>
@@ -24,48 +26,35 @@ export default {
 
 <style lang="scss">
 .nav {
-  ul {
-    display: flex;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
 
-    .nav__item {
-      &:not(.nav__item--home) {
-        flex: 1;
-      }
+  .nav__item {
+    padding: 0 5px;
 
-      &__link {
-        --bg-color: #{$darkGrey};
+    &__link {
+      --bg-color: #{$darkGrey};
+      --txt-color: white;
+
+      display: block;
+      padding: 10px;
+
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      color: var(--txt-color);
+
+      background-color: var(--bg-color);
+      line-height: 1.1;
+      transition: 0.3s all ease;
+      border-radius: 5px;
+
+      &--active,
+      &:hover {
         --txt-color: white;
-
-        display: block;
-        padding: 10px;
-
-        font-size: 2.4rem;
-        font-weight: 400;
-        text-align: center;
-        text-decoration: none;
-        color: var(--txt-color);
-
-        background-color: var(--bg-color);
-        line-height: 1.1;
-        transition: 0.3s all ease;
-
-        &--active,
-        &:hover {
-          --txt-color: #{$darkGrey};
-          --bg-color: white;
-        }
-      }
-
-      &--home {
-        .nav__item__link {
-          --txt-color: white;
-          --bg-color: #{$pink};
-
-          &:hover {
-            --bg-color: #{$lightGrey};
-            --txt-color: #{$pink};
-          }
-        }
+        --bg-color: #{$pink};
       }
     }
   }
