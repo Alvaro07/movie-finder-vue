@@ -1,9 +1,9 @@
 <template>
   <section class="home">
-    <router-link tag="figure" to="/films" class="home__figure home__figure--films">
+    <router-link tag="figure" to="/search/films" class="home__figure home__figure--films">
       <h2 class="home__figure__title">Films</h2>
     </router-link>
-    <router-link tag="figure" to="/series" class="home__figure home__figure--series">
+    <router-link tag="figure" to="/search/series" class="home__figure home__figure--series">
       <h2 class="home__figure__title">Series</h2>
     </router-link>
   </section>
