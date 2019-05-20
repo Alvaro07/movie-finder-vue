@@ -3,12 +3,19 @@
     <header-nav></header-nav>
 
     <main class="page-wrap__main">
-      <section class="search-field">
-        <input-field type="text" :placeholder="'Search ' + searchType" extraClass="margin-right-10"></input-field>
-        <v-button iconClass="search"></v-button>
-      </section>
+      <form class="search-field">
+        <input-field
+          type="text"
+          :placeholder="'Search ' + searchType"
+          extraClass="margin-right-10"
+          v-model="searchValue"
+        ></input-field>
+        <v-button iconClass="search" :onClick="getData"></v-button>
+      </form>
 
-      <section class="results"></section>
+      <section class="results">
+        <p v-if="isLoading">Loading ...</p>
+      </section>
     </main>
   </section>
 </template>
@@ -19,6 +26,7 @@
 import HeaderNav from "../components/HeaderNav";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
+import APIKEY from "../../apikey";
 
 export default {
   name: "search",
@@ -29,12 +37,27 @@ export default {
   },
   data() {
     return {
+      searchValue: "",
+      isLoading: false,
       searchType: this.$route.params.type
     };
   },
   beforeRouteUpdate(to, from, next) {
     this.searchType = to.params.type;
     next();
+  },
+  methods: {
+    getData() {
+      this.isLoading = true;
+
+      fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&t=star-wars&page=20`)
+        .then(data => data.json())
+        .then(json => {
+          console.log(json)
+          this.isLoading = false;
+        })
+        .catch(error => {});
+    }
   }
 };
 </script>

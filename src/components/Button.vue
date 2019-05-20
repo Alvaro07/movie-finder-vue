@@ -1,5 +1,5 @@
 <template>
-  <button class="c-button" :class="extraClass">
+  <button class="c-button" :class="extraClass" @click.prevent="onButtonClick">
     <font-awesome-icon v-if="this.iconClass" :icon="this.iconClass"/>
     {{ text }}
   </button>
@@ -17,6 +17,15 @@ export default {
     extraClass: {
       type: String,
       requirted: false
+    },
+    onClick: {
+      type: Function,
+      required: false
+    }
+  },
+  methods: {
+    onButtonClick() {
+      this.onClick();
     }
   }
 };
