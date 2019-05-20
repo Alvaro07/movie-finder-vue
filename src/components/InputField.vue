@@ -1,5 +1,12 @@
 <template>
-  <input :type="type" :placeholder="placeholder" class="c-input" :class="extraClass">
+  <input
+    :type="type"
+    :placeholder="placeholder"
+    class="c-input"
+    :class="extraClass"
+    :value="value"
+    @input="getData($event.target.value)"
+  >
 </template>
 <script>
 export default {
@@ -16,8 +23,17 @@ export default {
     extraClass: {
       type: String,
       requirted: false
+    },
+    value: {
+      type: String,
+      required: true
     }
-  }
+  },
+  methods: {
+    getData(data) {
+      this.$emit("input", data);
+    }
+  },
 };
 </script>
 <style lang="scss">
