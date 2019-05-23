@@ -23,7 +23,7 @@
           <p v-if="searchData.errorMessage" class="padding-top-10">{{ searchData.errorMessage}}</p>
         </div>
 
-        <div class="results__more-data" v-if="searchData.results">
+        <div class="results__more-data" v-if="searchData.results && searchData.results.length % 10 === 0">
           <v-button text="More data" :onClick="getMoreData"></v-button>
         </div>
       </section>
@@ -69,7 +69,7 @@ export default {
     getData(page, moreData) {
       this.searchData.isLoading = true;
       this.searchData.errorMessage = null;
-      
+
       fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${this.searchData.title}&page=${page}&type=${this.searchType}`)
         .then(data => data.json())
         .then(json => {
