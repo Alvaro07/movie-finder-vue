@@ -10,23 +10,26 @@
           extraClass="margin-right-10"
           v-model="searchData.title"
         ></input-field>
-        <v-button iconClass="search" :onClick="getData"></v-button>
+        <v-button iconClass="search" :onClick="() => getData(this.searchData.page)"></v-button>
       </form>
 
       <section class="results">
-        <p v-if="searchData.isLoading">Loading ...</p>
         <ul v-if="searchData.results" class="results__lists">
           <li
             v-for="(item, index) in searchData.results"
             :key="index"
-            :style="{ 'background-image': 'url(' + searchData.results[index].Poster + ')' }"
+            :style="{ 'background-image': item.Poster === 'N/A' ? `url(${require(`@/assets/icon-no-image.svg`)})` : `url(${item.Poster})` }"
             class="results__item"
           >
             <div class="results__item__title">
-              <h4>{{ searchData.results[index].Title }}</h4>
+              <h4>{{ item.Title }}</h4>
             </div>
           </li>
         </ul>
+        <p v-if="searchData.isLoading">Loading ...</p>
+        <div class="results__more-data" v-if="searchData.results">
+          <v-button text="More data" :onClick="getMoreData"></v-button>
+        </div>
       </section>
     </main>
   </section>
@@ -49,7 +52,7 @@ export default {
   },
   data() {
     return {
-      searchType: this.$route.params.type,
+      searchType: this.$route.params.type === "series" ? "series" : "movie",
       searchData: {
         title: "",
         page: 1,
@@ -63,18 +66,28 @@ export default {
     next();
   },
   methods: {
-    getData() {
+    getData(page) {
       this.searchData.isLoading = true;
-      this.searchData.results = null;
-      
-      fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${this.searchData.title}&page=${this.searchData.page}&type=${this.searchType}`)
+
+      fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${this.searchData.title}&page=${page}&type=${this.searchType}`)
         .then(data => data.json())
         .then(json => {
           this.searchData.isLoading = false;
-          this.searchData.results = json.Search;
-          console.log(this.searchData.results);
+          let newResults = [];
+
+          this.searchData.results === null
+            ? (newResults = json.Search)
+            : (newResults = [...json.Search, ...this.searchData.results]);
+
+          this.searchData.results = newResults;
         })
-        .catch(error => {});
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getMoreData() {
+      ++this.searchData.page;
+      this.getData(this.searchData.page);
     }
   }
 };
@@ -110,7 +123,7 @@ export default {
     }
 
     @include mediaDesktop {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
     }
   }
 
@@ -121,16 +134,16 @@ export default {
     display: flex;
     align-items: flex-end;
     cursor: pointer;
-    transition: .3s all ease;
+    transition: 0.3s all ease;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
 
     &__title {
       & > h4 {
         display: inline;
-        
+
         color: $darkGrey;
         font-size: 1.8rem;
         font-weight: 700;
@@ -138,9 +151,14 @@ export default {
         background: white;
         padding: 2px 0;
         line-height: 28px;
-        box-shadow:5px 0 0 white, -5px 0 0 white;
+        box-shadow: 5px 0 0 white, -5px 0 0 white;
       }
     }
+  }
+
+  &__more-data {
+    padding: 20px 0;
+    text-align: center;
   }
 }
 </style>
