@@ -15,18 +15,14 @@
 
       <section class="results">
         <ul v-if="searchData.results" class="results__lists">
-          <li
-            v-for="(item, index) in searchData.results"
-            :key="index"
-            :style="{ 'background-image': item.Poster === 'N/A' ? `url(${require(`@/assets/icon-no-image.svg`)})` : `url(${item.Poster})` }"
-            class="results__item"
-          >
-            <div class="results__item__title">
-              <h4>{{ item.Title }}</h4>
-            </div>
-          </li>
+          <card v-for="(item, index) in searchData.results" :key="index" :item="item"></card>
         </ul>
-        <p v-if="searchData.isLoading">Loading ...</p>
+
+        <div class="results__info" v-if="searchData.isLoading || searchData.errorMessage">
+          <p v-if="searchData.isLoading" class="padding-top-10">Loading ...</p>
+          <p v-if="searchData.errorMessage" class="padding-top-10">{{ searchData.errorMessage}}</p>
+        </div>
+
         <div class="results__more-data" v-if="searchData.results">
           <v-button text="More data" :onClick="getMoreData"></v-button>
         </div>
@@ -40,6 +36,7 @@
 <script>
 import HeaderNav from "../components/HeaderNav";
 import InputField from "../components/InputField";
+import Card from "../components/Card";
 import Button from "../components/Button";
 import APIKEY from "../../apikey";
 
@@ -48,7 +45,8 @@ export default {
   components: {
     "header-nav": HeaderNav,
     "input-field": InputField,
-    "v-button": Button
+    "v-button": Button,
+    card: Card
   },
   data() {
     return {
@@ -57,37 +55,50 @@ export default {
         title: "",
         page: 1,
         isLoading: false,
-        results: null
+        results: null,
+        errorMessage: null
       }
     };
   },
   beforeRouteUpdate(to, from, next) {
     this.searchType = to.params.type;
+    this.searchData.results = null;
     next();
   },
   methods: {
-    getData(page) {
+    getData(page, moreData) {
       this.searchData.isLoading = true;
-
+      this.searchData.errorMessage = null;
+      
       fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&s=${this.searchData.title}&page=${page}&type=${this.searchType}`)
         .then(data => data.json())
         .then(json => {
           this.searchData.isLoading = false;
-          let newResults = [];
 
-          this.searchData.results === null
-            ? (newResults = json.Search)
-            : (newResults = [...json.Search, ...this.searchData.results]);
+          // Check error fetch
+          if (json.Error) {
+            this.searchData.errorMessage = json.Error;
+            this.searchData.results = null;
+            return;
+          }
+
+          // Paint fecth results
+          let newResults = [];
+          this.searchData.errorMessage = null;
+
+          if (this.searchData.results === null || moreData === undefined) {
+            newResults = json.Search;
+          } else {
+            newResults = [...this.searchData.results, ...json.Search];
+          }
 
           this.searchData.results = newResults;
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     },
     getMoreData() {
       ++this.searchData.page;
-      this.getData(this.searchData.page);
+      this.getData(this.searchData.page, true);
     }
   }
 };
@@ -127,33 +138,10 @@ export default {
     }
   }
 
-  &__item {
-    background-size: cover;
-    background-position: center center;
-    padding: 5px 10px;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    transition: 0.3s all ease;
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &__title {
-      & > h4 {
-        display: inline;
-
-        color: $darkGrey;
-        font-size: 1.8rem;
-        font-weight: 700;
-
-        background: white;
-        padding: 2px 0;
-        line-height: 28px;
-        box-shadow: 5px 0 0 white, -5px 0 0 white;
-      }
-    }
+  &__info {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 700;
   }
 
   &__more-data {
