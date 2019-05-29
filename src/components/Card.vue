@@ -1,12 +1,14 @@
 <template>
-  <li
+  <router-link
+    tag="li"
     :style="{ 'background-image': item.Poster === 'N/A' ? `url(${require(`@/assets/icon-no-image.svg`)})` : `url(${item.Poster})` }"
     class="c-card"
+    :to="'/title/' + refactorTitle"
   >
     <div class="c-card__title">
       <h4>{{ item.Title }}</h4>
     </div>
-  </li>
+  </router-link>
 </template>
 <script>
 export default {
@@ -15,6 +17,11 @@ export default {
     item: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    refactorTitle() {
+      return this.item.Title.replace(/ /g, "-");
     }
   }
 };
