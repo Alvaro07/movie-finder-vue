@@ -9,10 +9,12 @@ export default {
   name: "v-button",
   props: {
     text: {
-      type: String
+      type: String,
+      required: false
     },
     iconClass: {
-      type: String
+      type: String,
+      required: false
     },
     extraClass: {
       type: String,
