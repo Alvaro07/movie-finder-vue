@@ -1,5 +1,5 @@
 module.exports = {
-  // publicPath: "movie-finder-vue",
+  publicPath: "movie-finder-vue",
   css: {
     loaderOptions: {
       sass: {
