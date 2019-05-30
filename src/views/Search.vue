@@ -23,7 +23,10 @@
           <p v-if="searchData.errorMessage" class="padding-top-10">{{ searchData.errorMessage}}</p>
         </div>
 
-        <div class="results__more-data" v-if="searchData.results && searchData.results.length % 10 === 0">
+        <div
+          class="results__more-data"
+          v-if="searchData.results && searchData.results.length % 10 === 0"
+        >
           <v-button text="More data" :onClick="getMoreData"></v-button>
         </div>
       </section>
@@ -50,7 +53,7 @@ export default {
   },
   data() {
     return {
-      searchType: this.$route.params.type === "series" ? "series" : "movie",
+      searchType: this.$route.params.type === "tv-shows" ? "series" : "movie",
       searchData: {
         title: "",
         page: 1,
@@ -61,7 +64,7 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    this.searchType = to.params.type;
+    this.searchType = to.params.type === "tv-shows" ? "series" : "movie";
     this.searchData.results = null;
     next();
   },
@@ -107,7 +110,7 @@ export default {
 <style lang="scss">
 .page-wrap {
   padding: 15px;
-  max-width: 1280px;
+  max-width: 1024px;
   margin: 0 auto;
 }
 .search-field {
