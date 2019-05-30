@@ -1,29 +1,7 @@
-# movie-finder-vue
+# Movie and tv shows finder
 
-## Project setup
-```
-npm install
-```
+Developed with Vue
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+--
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Link: [https://alvaro07.github.io/movie-finder-vue/](https://alvaro07.github.io/movie-finder-vue/)
