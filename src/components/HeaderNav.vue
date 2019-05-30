@@ -12,7 +12,7 @@
       </li>
 
       <li class="nav__item">
-        <router-link to="/search/series" class="nav__item__link" exact>Series</router-link>
+        <router-link to="/search/tv-shows" class="nav__item__link" exact>Tv Shows</router-link>
       </li>
     </ul>
   </nav>
