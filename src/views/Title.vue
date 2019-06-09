@@ -62,7 +62,7 @@ export default {
   methods: {
     getFullData() {
       return new Promise((resolve, reject) => {
-        fetch(`http://www.omdbapi.com/?apikey=${APIKEY}&t=${this.urlTitle}`)
+        fetch(`https://www.omdbapi.com/?apikey=${APIKEY}&t=${this.urlTitle}`)
           .then(data => data.json())
           .then(json => {
             resolve(json);
